@@ -5,7 +5,10 @@ import db from '../db/connector.js';
 const formatVillain = (villain) => ({
   ...villain,
   spotted_time: villain.spotted_at.toLocaleTimeString(),
-  spotted_date: villain.spotted_at.toLocaleDateString()
+  spotted_date: villain.spotted_at.toLocaleDateString(),
+  isActive:      villain.status === 'active',
+  isCaptured:    villain.status === 'captured',
+  isNeutralized: villain.status === 'neutralized',
 });
 
 const validateVillain = ({ threat_level }) => {
@@ -58,7 +61,7 @@ router.get('/edit/:id', async (req, res) => {
 
     res.render('villains', {
       villains: allVillains.rows.map(formatVillain),
-      editingVillain: rows[0]
+      editingVillain: formatVillain(rows[0])
     });
   } catch (err) {
     console.error('Бетгерл: Помилка при відкритті досьє ворога:', err);

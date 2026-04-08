@@ -16,7 +16,6 @@
             --neutral: #607080;
             --bg: #05080f;
             --bg2: #080d18;
-            --bg3: #0b1220;
             --panel: #0d1525;
             --border: rgba(0,200,255,0.13);
             --border2: rgba(0,200,255,0.3);
@@ -40,15 +39,18 @@
             content: '';
             position: fixed;
             inset: 0;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0,0,0,0.07) 2px,
-                rgba(0,0,0,0.07) 4px
-            );
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px);
             pointer-events: none;
-            z-index: 1000;
+            z-index: 9999;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, var(--accent2) 20%, var(--accent) 50%, var(--accent2) 80%, transparent 100%);
+            z-index: 9998;
         }
 
         .page-wrapper {
@@ -57,9 +59,8 @@
             padding: 0 32px 80px;
         }
 
-        /* ── HEADER ── */
         .bat-header {
-            padding: 48px 0 36px;
+            padding: 40px 0 32px;
             display: flex;
             align-items: center;
             gap: 28px;
@@ -72,18 +73,47 @@
             content: '';
             position: absolute;
             bottom: -1px; left: 0;
-            width: 260px; height: 1px;
+            width: 300px; height: 1px;
             background: linear-gradient(90deg, var(--accent), transparent);
         }
 
         .bat-logo {
-            width: 68px; height: 68px;
+            width: 90px;
+            height: 56px;
             flex-shrink: 0;
+            position: relative;
         }
 
         .bat-logo svg {
             width: 100%; height: 100%;
-            filter: drop-shadow(0 0 14px rgba(0,200,255,0.55));
+            filter: drop-shadow(0 0 10px rgba(0,200,255,0.4)) drop-shadow(0 0 24px rgba(0,120,200,0.2));
+        }
+
+        .bat-logo::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,200,255,0.15);
+            animation: ring-pulse 3s ease-in-out infinite;
+        }
+
+        .bat-logo::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 96px; height: 96px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,200,255,0.07);
+            animation: ring-pulse 3s ease-in-out infinite 0.5s;
+        }
+
+        @keyframes ring-pulse {
+            0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.3; transform: translate(-50%, -50%) scale(1.08); }
         }
 
         .bat-header-text h1 {
@@ -101,14 +131,18 @@
 
         .bat-header-text p {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             color: var(--text-muted);
             letter-spacing: 3px;
             text-transform: uppercase;
         }
 
-        .header-status {
+        .header-right {
             margin-left: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
             flex-shrink: 0;
         }
 
@@ -120,7 +154,7 @@
             border: 1px solid var(--border2);
             padding: 7px 16px;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.68rem;
+            font-size: 0.65rem;
             color: var(--accent);
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -138,7 +172,14 @@
             50% { opacity: 0.3; transform: scale(0.6); }
         }
 
-        /* ── BUTTONS ── */
+        .header-coords {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.58rem;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            text-align: right;
+        }
+
         .btn {
             display: inline-flex;
             align-items: center;
@@ -148,7 +189,7 @@
             border: none;
             text-decoration: none;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             letter-spacing: 2px;
             text-transform: uppercase;
             transition: all 0.18s ease;
@@ -157,19 +198,14 @@
         .btn-back {
             background: transparent;
             color: var(--text-muted);
-            border: 1px solid rgba(60,80,100,0.45);
+            border: 1px solid rgba(60,80,100,0.4);
             margin-bottom: 28px;
         }
-        .btn-back:hover {
-            color: var(--accent);
-            border-color: var(--accent);
-            background: var(--accent-glow);
-        }
+        .btn-back:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-glow); }
 
-        /* ── SECTION HEADING ── */
         h2 {
             font-family: 'Orbitron', monospace;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: var(--accent);
             letter-spacing: 5px;
@@ -180,33 +216,18 @@
             gap: 14px;
         }
 
-        h2 .h2-num {
-            font-size: 0.6rem;
-            color: var(--text-dim);
-            font-weight: 400;
-        }
+        h2 .h2-num { font-size: 0.58rem; color: var(--text-dim); font-weight: 400; }
+        h2::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
 
-        h2::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, var(--border2), transparent);
-        }
+        hr { border: none; border-top: 1px solid var(--border); margin: 44px 0; }
 
-        hr {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 44px 0;
-        }
-
-        /* ── FORM CARD ── */
         .card {
             background: var(--panel);
             border: 1px solid var(--border);
-            padding: 32px 34px;
+            padding: 32px 34px 42px;
             margin-bottom: 40px;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .card::before {
@@ -217,17 +238,26 @@
             background: linear-gradient(90deg, var(--accent), var(--accent2), transparent);
         }
 
-        .card::after {
-            content: 'GCPD // SECURE INPUT TERMINAL';
+        .card-watermark {
             position: absolute;
-            bottom: 12px; right: 18px;
+            bottom: 10px; right: 18px;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.58rem;
+            font-size: 0.56rem;
             color: var(--text-dim);
             letter-spacing: 3px;
+            pointer-events: none;
         }
 
-        /* ── FORM ── */
+        .corner-tl, .corner-tr, .corner-bl, .corner-br {
+            position: absolute;
+            width: 12px; height: 12px;
+            pointer-events: none;
+        }
+        .corner-tl { top: -1px; left: -1px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+        .corner-tr { top: -1px; right: -1px; border-top: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+        .corner-bl { bottom: -1px; left: -1px; border-bottom: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+        .corner-br { bottom: -1px; right: -1px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+
         .form-group { margin-bottom: 20px; }
 
         .form-group label {
@@ -236,67 +266,163 @@
             gap: 7px;
             margin-bottom: 8px;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.68rem;
+            font-size: 0.66rem;
             letter-spacing: 3px;
             text-transform: uppercase;
             color: var(--text-muted);
         }
 
-        .form-group label::before {
-            content: '›';
-            color: var(--accent);
-            font-size: 1rem;
-            line-height: 1;
-        }
+        .form-group label::before { content: '›'; color: var(--accent); font-size: 1rem; line-height: 1; }
 
-        .form-group input,
-        .form-group select {
+        .form-group input {
             width: 100%;
             padding: 12px 16px;
             background: var(--bg2);
             border: 1px solid var(--border);
             color: #d0e8f8;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.88rem;
+            font-size: 0.86rem;
             letter-spacing: 1px;
             transition: border-color 0.2s, box-shadow 0.2s;
             outline: none;
             appearance: none;
-            -webkit-appearance: none;
         }
 
-        .form-group input:focus,
-        .form-group select:focus {
+        .form-group input:focus {
             border-color: var(--accent);
             box-shadow: 0 0 0 3px var(--accent-glow);
         }
 
-        .form-group input::placeholder {
-            color: var(--text-dim);
-            font-size: 0.78rem;
-        }
+        .form-group input::placeholder { color: var(--text-dim); font-size: 0.76rem; }
 
-        .form-group select {
-            cursor: pointer;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2300c8ff'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
-            padding-right: 36px;
-        }
-
-        .form-group select option { background: #0d1525; }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-        }
-
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
         @media (max-width: 580px) { .form-row { grid-template-columns: 1fr; } }
+
+        .custom-select-wrap {
+            position: relative;
+            user-select: none;
+        }
+
+        .cs-trigger {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            color: #d0e8f8;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.86rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .cs-trigger:hover, .cs-trigger.open {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .cs-trigger .cs-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .cs-arrow {
+            width: 18px; height: 18px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .cs-arrow::before, .cs-arrow::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 7px; height: 1.5px;
+            background: var(--accent);
+            transition: transform 0.25s ease;
+        }
+
+        .cs-arrow::before { transform: translate(-100%, -50%) rotate(-45deg); }
+        .cs-arrow::after  { transform: translate(0%, -50%) rotate(45deg); }
+        .cs-trigger.open .cs-arrow::before { transform: translate(-100%, -50%) rotate(45deg); }
+        .cs-trigger.open .cs-arrow::after  { transform: translate(0%, -50%) rotate(-45deg); }
+
+        .cs-dropdown {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0; right: 0;
+            background: #0a1020;
+            border: 1px solid var(--accent);
+            z-index: 500;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: max-height 0.3s ease, opacity 0.25s ease, transform 0.25s ease;
+            pointer-events: none;
+        }
+
+        .cs-dropdown.open {
+            max-height: 200px;
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .cs-dropdown::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        .cs-option {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.82rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            color: var(--text-muted);
+            border-left: 2px solid transparent;
+            transition: all 0.15s ease;
+        }
+
+        .cs-option:hover {
+            background: rgba(0,200,255,0.07);
+            color: #d0e8f8;
+            border-left-color: var(--accent);
+        }
+
+        .cs-option.selected {
+            color: var(--accent);
+            border-left-color: var(--accent);
+            background: rgba(0,200,255,0.05);
+        }
+
+        .cs-option + .cs-option { border-top: 1px solid var(--border); }
+
+        .s-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .s-dot-active      { background: var(--danger);  box-shadow: 0 0 6px var(--danger); animation: pulse 1.4s infinite; }
+        .s-dot-captured    { background: var(--success); box-shadow: 0 0 6px var(--success); }
+        .s-dot-neutralized { background: var(--neutral); }
 
         .btn-submit {
             width: 100%;
-            margin-top: 10px;
+            margin-top: 12px;
             padding: 15px 24px;
             background: var(--accent);
             color: var(--bg);
@@ -308,14 +434,23 @@
             border: none;
             text-transform: uppercase;
             transition: all 0.18s ease;
+            position: relative;
+            overflow: hidden;
         }
-        .btn-submit:hover {
-            background: #44dcff;
-            box-shadow: 0 0 28px rgba(0,200,255,0.35);
+
+        .btn-submit::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
         }
+
+        .btn-submit:hover::after { transform: translateX(100%); }
+        .btn-submit:hover { background: #44dcff; box-shadow: 0 0 30px rgba(0,200,255,0.4); }
         .btn-submit:active { transform: scale(0.99); }
 
-        /* ── VILLAIN LIST ── */
         #villains-list { display: flex; flex-direction: column; gap: 10px; }
 
         .villain-item {
@@ -323,15 +458,15 @@
             border: 1px solid var(--border);
             display: grid;
             grid-template-columns: 3px 1fr auto;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        .villain-item:hover { border-color: var(--border2); }
-
-        .villain-stripe {
-            background: var(--accent2);
-            transition: background 0.2s;
+        .villain-item:hover {
+            border-color: var(--border2);
+            box-shadow: 0 0 20px rgba(0,200,255,0.06);
         }
+
+        .villain-stripe { background: var(--accent2); transition: background 0.2s; }
         .villain-item:hover .villain-stripe { background: var(--accent); }
 
         .villain-body { padding: 20px 24px; }
@@ -373,36 +508,23 @@
 
         .meta-tag .ico { color: var(--accent); }
 
-        .threat-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .threat-row { display: flex; align-items: center; gap: 10px; }
 
         .threat-label {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.62rem;
+            font-size: 0.6rem;
             color: var(--text-dim);
             letter-spacing: 2px;
             text-transform: uppercase;
             white-space: nowrap;
         }
 
-        .threat-track {
-            flex: 1;
-            max-width: 150px;
-            height: 3px;
-            background: rgba(255,255,255,0.05);
-        }
-
-        .threat-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent2), var(--accent));
-        }
+        .threat-track { flex: 1; max-width: 150px; height: 3px; background: rgba(255,255,255,0.05); }
+        .threat-fill  { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); }
 
         .threat-val {
             font-family: 'Orbitron', monospace;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: 700;
             color: var(--accent);
             min-width: 28px;
@@ -410,7 +532,7 @@
 
         .villain-time {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.62rem;
+            font-size: 0.6rem;
             color: var(--text-dim);
             letter-spacing: 2px;
             margin-top: 10px;
@@ -422,7 +544,7 @@
             gap: 6px;
             padding: 4px 10px;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.62rem;
+            font-size: 0.6rem;
             letter-spacing: 2px;
             text-transform: uppercase;
             border: 1px solid;
@@ -431,10 +553,10 @@
 
         .status-dot { width: 5px; height: 5px; border-radius: 50%; }
 
-        .status-active    { color: var(--danger);  border-color: rgba(255,59,59,0.3);  background: rgba(255,59,59,0.07); }
-        .status-active    .status-dot { background: var(--danger); animation: pulse 1.4s infinite; }
-        .status-captured  { color: var(--success); border-color: rgba(0,230,118,0.3);  background: rgba(0,230,118,0.06); }
-        .status-captured  .status-dot { background: var(--success); }
+        .status-active      { color: var(--danger);  border-color: rgba(255,59,59,0.3);  background: rgba(255,59,59,0.07); }
+        .status-active      .status-dot { background: var(--danger); animation: pulse 1.4s infinite; }
+        .status-captured    { color: var(--success); border-color: rgba(0,230,118,0.3);  background: rgba(0,230,118,0.06); }
+        .status-captured    .status-dot { background: var(--success); }
         .status-neutralized { color: var(--neutral); border-color: rgba(96,112,128,0.3); background: rgba(96,112,128,0.06); }
         .status-neutralized .status-dot { background: var(--neutral); }
 
@@ -451,7 +573,7 @@
             border: none;
             background: transparent;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.66rem;
+            font-size: 0.64rem;
             letter-spacing: 1px;
             text-transform: uppercase;
             text-decoration: none;
@@ -465,7 +587,6 @@
         }
 
         .btn-action + .btn-action { border-top: 1px solid var(--border); }
-
         .btn-edit   { color: var(--accent); }
         .btn-edit:hover   { background: rgba(0,200,255,0.08); }
         .btn-delete { color: var(--danger); }
@@ -476,7 +597,7 @@
             padding: 44px;
             text-align: center;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             letter-spacing: 4px;
             color: var(--text-dim);
             text-transform: uppercase;
@@ -488,7 +609,7 @@
             .villain-actions { flex-direction: row; grid-column: 1 / -1; border-left: none; border-top: 1px solid var(--border); }
             .btn-action + .btn-action { border-top: none; border-left: 1px solid var(--border); }
             .bat-header { flex-wrap: wrap; gap: 16px; }
-            .header-status { margin-left: 0; }
+            .header-right { margin-left: 0; }
         }
     </style>
 </head>
@@ -498,19 +619,26 @@
 
     <header class="bat-header">
         <div class="bat-logo">
-            <svg viewBox="0 0 80 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M40 10 C29 10 17 5 8 1 C10 13 14 19 21 23 C14 23 8 27 4 35 C10 33 16 33 20 35 C16 41 18 49 20 53 C26 45 32 41 40 41 C48 41 54 45 60 53 C62 49 64 41 60 35 C64 33 70 33 76 35 C72 27 66 23 59 23 C66 19 70 13 72 1 C63 5 51 10 40 10Z" fill="#00c8ff"/>
+            <svg viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="60" cy="38" rx="54" ry="18" fill="#00c8ff" opacity="0.08"/>
+                <ellipse cx="60" cy="38" rx="54" ry="18" fill="none" stroke="#00c8ff" stroke-width="1" opacity="0.3"/>
+                <path d="M60 14 C52 14 44 8 34 4 C36 14 40 20 46 24 C40 22 32 24 24 30 C30 28 36 28 40 32 C34 36 32 44 34 50 C40 42 48 38 60 38 C72 38 80 42 86 50 C88 44 86 36 80 32 C84 28 90 28 96 30 C88 24 80 22 74 24 C80 20 84 14 86 4 C76 8 68 14 60 14Z" fill="#00c8ff" opacity="0.9"/>
+                <path d="M46 24 C40 22 32 24 24 30 C30 28 36 28 40 32 C38 28 42 25 46 24Z" fill="#44dcff" opacity="0.5"/>
+                <path d="M74 24 C78 25 82 28 80 32 C84 28 90 28 96 30 C88 24 80 22 74 24Z" fill="#44dcff" opacity="0.5"/>
+                <path d="M60 14 C56 10 52 6 48 2 C50 8 52 12 54 16Z" fill="#44dcff" opacity="0.7"/>
+                <path d="M60 14 C64 10 68 6 72 2 C70 8 68 12 66 16Z" fill="#44dcff" opacity="0.7"/>
             </svg>
         </div>
         <div class="bat-header-text">
             <h1>GOTHAM <span>VILLAIN</span> REGISTRY</h1>
             <p>Gotham City Police Department — Classified Intelligence System</p>
         </div>
-        <div class="header-status">
+        <div class="header-right">
             <div class="status-pill">
                 <span class="pulse-dot"></span>
                 System Online
             </div>
+            <div class="header-coords">40.7128° N / 74.0060° W // GOTHAM CITY</div>
         </div>
     </header>
 
@@ -524,6 +652,11 @@
     {{/if}}
 
     <div class="card">
+        <div class="corner-tl"></div>
+        <div class="corner-tr"></div>
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+
         <form action="{{#if editingVillain}}/villains/edit/{{editingVillain.id}}{{else}}/villains{{/if}}" method="POST">
 
             <div class="form-group">
@@ -543,12 +676,35 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="status">Статус</label>
-                    <select id="status" name="status">
-                        <option value="active"      {{#if (eq editingVillain.status 'active')}}selected{{/if}}>🔴 Active — на волі</option>
-                        <option value="captured"    {{#if (eq editingVillain.status 'captured')}}selected{{/if}}>🟢 Captured — в Аркемі</option>
-                        <option value="neutralized" {{#if (eq editingVillain.status 'neutralized')}}selected{{/if}}>⚫ Neutralized — загроза усунена</option>
+                    <label>Статус</label>
+                    <select name="status" id="status-hidden" style="display:none;">
+                        <option value="active"      {{#if editingVillain.isActive}}selected{{/if}}>Active</option>
+                        <option value="captured"    {{#if editingVillain.isCaptured}}selected{{/if}}>Captured</option>
+                        <option value="neutralized" {{#if editingVillain.isNeutralized}}selected{{/if}}>Neutralized</option>
                     </select>
+                    <div class="custom-select-wrap" id="cs-wrap">
+                        <div class="cs-trigger" id="cs-trigger">
+                            <span class="cs-label" id="cs-display">
+                                <span class="s-dot s-dot-active"></span>
+                                <span>Active — на волі</span>
+                            </span>
+                            <span class="cs-arrow"></span>
+                        </div>
+                        <div class="cs-dropdown" id="cs-dropdown">
+                            <div class="cs-option" data-value="active">
+                                <span class="s-dot s-dot-active"></span>
+                                Active — на волі
+                            </div>
+                            <div class="cs-option" data-value="captured">
+                                <span class="s-dot s-dot-captured"></span>
+                                Captured — в Аркемі
+                            </div>
+                            <div class="cs-option" data-value="neutralized">
+                                <span class="s-dot s-dot-neutralized"></span>
+                                Neutralized — загроза усунена
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -556,6 +712,7 @@
                 {{#if editingVillain}}// Оновити досьє{{else}}// Внести в реєстр{{/if}}
             </button>
         </form>
+        <div class="card-watermark">GCPD // SECURE INPUT TERMINAL</div>
     </div>
 
     <hr>
@@ -570,13 +727,13 @@
                     <div class="villain-top">
                         <h3>{{this.villain_name}}</h3>
                         <span>
-                            {{#if (eq this.status 'active')}}
+                            {{#if this.isActive}}
                                 <span class="status-badge status-active"><span class="status-dot"></span>На волі</span>
                             {{/if}}
-                            {{#if (eq this.status 'captured')}}
+                            {{#if this.isCaptured}}
                                 <span class="status-badge status-captured"><span class="status-dot"></span>В Аркемі</span>
                             {{/if}}
-                            {{#if (eq this.status 'neutralized')}}
+                            {{#if this.isNeutralized}}
                                 <span class="status-badge status-neutralized"><span class="status-dot"></span>Нейтралізований</span>
                             {{/if}}
                         </span>
@@ -606,6 +763,50 @@
 </div>
 
 <script>
+    (function() {
+        const trigger  = document.getElementById('cs-trigger');
+        const dropdown = document.getElementById('cs-dropdown');
+        const display  = document.getElementById('cs-display');
+        const hidden   = document.getElementById('status-hidden');
+        const options  = dropdown.querySelectorAll('.cs-option');
+
+        const labels = {
+            active:      { dot: 's-dot-active',      text: 'Active — на волі' },
+            captured:    { dot: 's-dot-captured',    text: 'Captured — в Аркемі' },
+            neutralized: { dot: 's-dot-neutralized', text: 'Neutralized — загроза усунена' }
+        };
+
+        function setSelected(value) {
+            const info = labels[value];
+            if (!info) return;
+            display.innerHTML = `<span class="s-dot ${info.dot}"></span><span>${info.text}</span>`;
+            hidden.value = value;
+            options.forEach(o => o.classList.toggle('selected', o.dataset.value === value));
+        }
+
+        if (hidden.value) setSelected(hidden.value);
+
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = dropdown.classList.contains('open');
+            dropdown.classList.toggle('open', !isOpen);
+            trigger.classList.toggle('open', !isOpen);
+        });
+
+        options.forEach(opt => {
+            opt.addEventListener('click', () => {
+                setSelected(opt.dataset.value);
+                dropdown.classList.remove('open');
+                trigger.classList.remove('open');
+            });
+        });
+
+        document.addEventListener('click', () => {
+            dropdown.classList.remove('open');
+            trigger.classList.remove('open');
+        });
+    })();
+
     document.querySelectorAll('.delete-btn').forEach(button => {
         button.addEventListener('click', async (e) => {
             const id = e.target.getAttribute('data-id');
