@@ -9,9 +9,9 @@
     <fieldset>
         <label>
             Username
-            <input name="username" placeholder="Enter Username" required />
+            <input type="text" name="username" placeholder="Enter Username" value={{formData.username}} required/>
             {{#if errorUsername}}
-                <p style="color:#ff0000">{{ErrorUsername}}</p>
+                <p style="color:#ff0000">{{errorUsername}}</p>
              {{/if}}
         </label>
         
@@ -19,21 +19,21 @@
             Password
             <input type="password" name="password" placeholder="Enter Password" required />
             {{#if errorPassword}}
-                <p style="color:#ff0000">{{ErrorPassword}}</p>
+                <p style="color:#ff0000">{{errorPassword}}</p>
             {{/if}}
         </label>
         
         <label>
             Age
-            <input type="number" name="age" placeholder="Enter Age" required />
+            <input type="number" name="age" value={{formData.age}} placeholder="Enter Age" required/>
             {{#if errorAge}}
-                <p style="color:#ff0000">{{ErrorAge}}</p>
+                <p style="color:#ff0000">{{errorAge}}</p>
             {{/if}}
         </label>
         
         <label>
             Place of birth
-            <input name="place_of_birth" placeholder="Enter Place of birth" required />
+            <input name="place_of_birth" value={{formData.place_of_birth}} placeholder="Enter Place of birth" required/>
             {{#if errorPlaceOfBirth}}
                 <p style="color:#ff0000">{{errorPlaceOfBirth}}</p>
             {{/if}}
